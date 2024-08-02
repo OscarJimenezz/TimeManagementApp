@@ -1,1 +1,1 @@
-# TimeManagementApp
+TimeManagementApp is a comprehensive TypeScript React application designed to enhance productivity and manage tasks efficiently. This core component seamlessly integrates routing to key features including TaskList for task overview, TaskDetail for in-depth task information, and ProgressReport for tracking your performance over time. Perfect for individuals seeking to streamline their workflow and maximize productivity.
