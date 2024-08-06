@@ -1,3 +1,4 @@
+// NavBar.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ export default NavBar;
 ```
 
 ```tsx
+// NotFound.tsx
 import React from 'react';
 
 const NotFound: React.FC = () => {
@@ -30,24 +32,25 @@ export default NotFound;
 ```
 
 ```tsx
+// App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import TaskList from './components/TaskList';
 import TaskDetail from './components/TaskDetail';
 import ProgressReport from './components/ProgressReport';
-import NavBar from './components/NavBar'; // import NavBar component
-import NotFound from './components/NotFound'; // import NotFound component
+import NavBar from './components/NavBar';
+import NotFound from './components/NotFound';
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
-        <NavBar /> {/* Include the NavBar at the top */}
+        <NavBar /> {/* NavBar at the top */}
         <Switch>
           <Route exact path="/" component={TaskList} />
           <Route path="/task/:id" component={TaskDetail} />
           <Route path="/progress" component={ProgressReport} />
-          <Route component={NotFound} /> {/* Handle undefined routes */}
+          <Route component={NotFound} /> {/* Undefined routes handler */}
         </Switch>
       </div>
     </Router>
