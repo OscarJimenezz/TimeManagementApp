@@ -17,8 +17,12 @@ const TaskList: React.FC = () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/tasks`);
                 setTasks(response.data);
-            } catch (error: any) {
-                setError(error.message);
+            } catch (err) {
+                if (axios.isAxiosError(err)) {
+                    setError(err.response?.data?.message || err.message);
+                } else {
+                    setError('An unexpected error occurred');
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -38,7 +42,7 @@ const TaskList: React.FC = () => {
                     {tasks.map((task) => (
                         <li key={task.id}>
                             <h3>{task.title}</h3>
-                            <p>{task.description}</p>
+                            <p>{task.description || 'No description provided'}</p>
                         </li>
                     ))}
                 </ul>
