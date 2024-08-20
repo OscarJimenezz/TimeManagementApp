@@ -3,8 +3,8 @@ import * as React from "react";
 interface TaskProps {
   description: string;
   deadline: string;
-  markCompleted: () => void; 
-  completed: boolean; 
+  markCompleted: () => void;
+  completed: boolean;
 }
 
 const TaskDetails: React.FC<TaskProps> = ({
@@ -13,7 +13,14 @@ const TaskDetails: React.FC<TaskProps> = ({
   markCompleted,
   completed,
 }) => {
-  const formattedDeadline = new Date(deadline).toLocaleDateString();
+  let formattedDeadline: string;
+  try {
+    formattedDeadline = new Date(deadline).toLocaleDateString();
+  } catch (error) {
+    console.error("Failed to format deadline:", error);
+    // Set a default or error message as the formatted deadline
+    formattedDeadline = "Invalid deadline";
+  }
 
   return (
     <div>
@@ -21,6 +28,7 @@ const TaskDetails: React.FC<TaskProps> = ({
       <p>{description}</p>
 
       <h2>Deadline</h2>
+      {/* Show formattedDeadline, which might be an error message if parsing failed */}
       <p>{formattedDeadline}</p>
 
       <h2>Status</h2>
