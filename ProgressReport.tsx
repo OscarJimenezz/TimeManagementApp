@@ -3,36 +3,36 @@ import { Bar } from 'react-chartjs-2';
 
 interface Task {
   date: string;
-  completedTasks: number;
+  completedTasksCount: number;
 }
 
-const fetchData = (): Promise<Task[]> => {
+const fetchTaskData = (): Promise<Task[]> => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve([
-        { date: '2023-01-01', completedTasks: 5 },
-        { date: '2023-01-02', completedTasks: 3 },
-        { date: '2023-01-03', completedTasks: 8 },
+        { date: '2023-01-01', completedTasksCount: 5 },
+        { date: '2023-01-02', completedTasksCount: 3 },
+        { date: '2023-01-03', completedTasksCount: 8 },
       ]);
     }, 1000);
   });
 };
 
-const UserProgressChart: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+const TaskCompletionChart: React.FC = () => {
+  const [taskData, setTaskData] = useState<Task[]>([]);
 
   useEffect(() => {
-    fetchData().then(data => {
-      setTasks(data);
+    fetchTaskData().then(data => {
+      setTaskData(data);
     });
   }, []);
 
-  const data = {
-    labels: tasks.map(task => task.date),
+  const chartData = {
+    labels: taskData.map(task => task.date),
     datasets: [
       {
         label: 'Completed Tasks',
-        data: tasks.map(task => task.completedTasks),
+        data: taskData.map(task => task.completedTasksCount),
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -40,7 +40,7 @@ const UserProgressChart: React.FC = () => {
     ],
   };
 
-  const options = {
+  const chartOptions = {
     scales: {
       yAxes: [
         {
@@ -52,7 +52,7 @@ const UserProgressChart: React.FC = () => {
     },
   };
 
-  return <Bar data={data} options={options} />;
+  return <Bar data={chartData} options={chartOptions} />;
 };
 
-export default UserProgressChart;
+export default TaskCompletionChart;
