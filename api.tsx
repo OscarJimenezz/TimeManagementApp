@@ -3,6 +3,8 @@ import fetch from 'node-fetch';
 const API_BASE_URL = process.env.API_BASE_URL;
 const AUTH_TOKEN = process.env.AUTH_TOKEN;
 
+let taskCache: Task[] | null = null; // Cache for tasks
+
 interface Task {
   id?: number;
   title: string;
@@ -44,6 +46,7 @@ export const createTask = async (task: Task) => {
     if (!response.ok) {
       throw new Error(data.message);
     }
+    taskCache = null; // Invalidate cache after creating a new task
     return data;
   } catch (error) {
     console.error('Create task error:', error);
@@ -52,6 +55,10 @@ export const createTask = async (task: Task) => {
 };
 
 export const getTasks = async () => {
+  if (taskCache) { // Return cached tasks if available
+    return taskCache;
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/tasks`, {
       method: 'GET',
@@ -63,6 +70,7 @@ export const getTasks = async () => {
     if (!response.ok) {
       throw new Error(data.message);
     }
+    taskCache = data; // Cache fetched tasks
     return data;
   } catch (error) {
     console.error('Get tasks error:', error);
@@ -84,6 +92,7 @@ export const updateTask = async (taskId: number, task: Task) => {
     if (!response.ok) {
       throw new Error(data.message);
     }
+    taskCache = null; // Invalidate cache after an update
     return data;
   } catch (error) {
     console.error('Update task error:', error);
@@ -102,6 +111,7 @@ export const deleteTask = async (taskId: number) => {
     if (!response.ok) {
       throw new Error('Error deleting task');
     }
+    taskCache = null; // Invalidate cache after deletion
     return 'Task deleted successfully';
   } catch (error) {
     console.error('Delete task error:', error);
