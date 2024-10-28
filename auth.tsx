@@ -15,12 +15,12 @@ let users: IUser[] = [
   {
     id: 1,
     username: 'user1',
-    password: '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdQ7Xqomi', 
+    password: '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdQ7Xqomi',
   },
 ];
 
 const hashPassword = async (password: string): Promise<string> => {
-  return await bcrypt.hash(password, 10);
+  return bcrypt.hash(password, 10);
 };
 
 const verifyPassword = async (password: string, hashedPassword: string): Promise<boolean> => {
@@ -30,7 +30,7 @@ const verifyPassword = async (password: string, hashedPassword: string): Promise
 export const registerUser = async (username: string, password: string): Promise<IUser | null> => {
   const hashedPassword = await hashPassword(password);
   const newUser: IUser = {
-    id: users.length + 1, 
+    id: users.length + 1,
     username,
     password: hashedPassword,
   };
@@ -56,9 +56,9 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
 export const validateSession = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = authHeader?.split(' ')[1];
 
-  if (token == null) {
+  if (!token) {
     res.sendStatus(401);
     return;
   }
